@@ -1,0 +1,86 @@
+﻿@model DbReportGenerator.Models.statusSQL
+
+<div id="dialog" title="Last Update @Html.DisplayFor(model=>model.LastUpdate)">
+    <table class="table">
+        <thead>
+        <th class="text-center" id="trimPadding">
+            @Html.DisplayNameFor(model => model.NodeName)
+        </th>
+        <th class="text-center" id="trimPadding">
+            @Html.DisplayNameFor(model => model.LogicalFileName)
+        </th>
+        <th class="text-center" id="trimPadding">
+            @Html.DisplayNameFor(model => model.PathFromSQL)
+        </th>
+        <th class="text-center" id="trimPadding">
+            @Html.DisplayNameFor(model => model.EncryptionStatus)
+        </th>
+        <th class="text-center" id="trimPadding">
+            @Html.DisplayNameFor(model => model.Application)
+        </th>
+        <th class="text-center" id="trimPadding">
+            @Html.DisplayNameFor(model => model.State)
+        </th>
+        </thead>
+        <td id="trimPadding" class="text-center">
+            @Html.DisplayFor(model => model.NodeName)
+        </td>
+        <td id="trimPadding" class="text-center">
+            @Html.DisplayFor(model => model.LogicalFileName)
+        </td>
+        <td id="trimPadding" class="text-center">
+            @Html.DisplayFor(model => model.PathFromSQL)
+        </td>
+        <td id="trimPadding" class="text-center">
+            @Html.DisplayFor(model => model.EncryptionStatus)
+        </td>
+        <td id="trimPadding" class="text-center">
+            @Html.DisplayFor(model => model.Application)
+        </td>
+        <td id="trimPadding" class="text-center">
+            @Html.DisplayFor(model => model.State)
+        </td>
+        <thead>
+        <th class="text-center" id="trimPadding">
+            @Html.DisplayNameFor(model => model.Instance)
+        </th>
+
+        <th class="text-center" id="trimPadding">
+            @Html.DisplayNameFor(model => model.DBname)
+        </th>
+        <th class="text-center" id="trimPadding">
+            @Html.DisplayNameFor(model => model.GuardPointPath)
+        </th>
+        <th class="text-center" id="trimPadding">
+            @Html.DisplayNameFor(model => model.NodeNameVormetric)
+        </th>
+        <th class="text-center" id="trimPadding">
+            @Html.DisplayNameFor(model => model.FileType)
+        </th>
+        <th class="text-center" id="trimPadding">
+            @Html.DisplayNameFor(model => model.Environment)
+        </th>
+        </thead>
+        <td id="trimPadding" class="text-center">
+            @Html.DisplayFor(model => model.Instance)
+        </td>
+        <td id="trimPadding" class="text-center">
+            @Html.DisplayFor(model => model.DBname)
+        </td>
+        <td id="trimPadding" class="text-center">
+            @Html.DisplayFor(model => model.GuardPointPath)
+        </td>
+        <td id="trimPadding" class="text-center">
+            @Html.DisplayFor(model => model.NodeNameVormetric)
+        </td>
+        <td id="trimPadding" class="text-center">
+            @Html.DisplayFor(model => model.FileType)
+        </td>
+        <td id="trimPadding" class="text-center">
+            @Html.DisplayFor(model => model.Environment)
+        </td>
+    </table>
+</div>
+
+
+

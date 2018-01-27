@@ -1,0 +1,138 @@
+﻿@model IEnumerable<DbReportGenerator.Models.statusSQL>
+@{
+    ViewBag.Title = "Index";
+    ViewBag.bodyCSSClass = "databasecontainer";
+
+}
+@section scripts{
+<script>
+    var Query = { Instance: null, DBname: null, FileType: "None", EncryptionStatus: "None", Application: "None", State: "None", page: "1" };
+    //Initializer
+    $.post("Submit", Query, function (data) { $("#DBreport").html(data); });
+    console.log(Query);
+    //Triggers on change of search (!Add submit button!) passes object with search values
+
+    $("#search").click(function () {
+        console.log(this.parentElement);
+        Query.EncryptionStatus = Encryption.value;
+        Query.Application = Application.value;
+        Query.FileType = fileType.value;
+        Query.State = State.value;
+        Query.DBname = $('#Instance').val();
+        Query.Instance = $('#Instance').val();
+        Query.page = "1";
+        console.log(Query, "Sent to Controller");
+        $.post("Submit", Query, function (data) { $("#DBreport").html(data) });
+    });
+    // Page Changer
+
+    $(document).on("click", "#pageUp", function () {
+        console.log("uptrigger")
+        var page = parseInt(document.getElementById("page").innerHTML)
+        var max = parseInt(document.getElementById("maxPage").innerHTML)
+
+        if (page < max) {
+            page++
+            Query.page = page.toString();
+            console.log(Query.page)
+            $.post("Submit", Query, function (data) { $("#DBreport").html(data) })
+            console.log("uptrigger", Query)
+        }
+    });
+
+    $(document).on("click", "#pageDown", function () {
+            console.log("dwntrigger")
+            var page = parseInt(document.getElementById("page").innerHTML)
+            if (page > 1) {
+                page--
+                Query.page = page.toString();
+                console.log(Query.page)
+                $.post("Submit", Query, function (data) { $("#DBreport").html(data) });
+                console.log("dwntrigger", Query)
+            }
+    });
+
+    // Data comparison
+    $(document).on("click", ".HoldData", function () {
+        var idString = this.id.toString();
+        var findID = { id: idString }
+        console.log(findID)
+    });
+
+    $(function () {
+        $("#dialog").dialog();
+    });
+    $.post("Details", findID, function (data) { $("#Details").html(data) });
+
+
+    $(document).on("click", "#RemoveReview", function () { $("#Details").html("<div></div>") });
+
+    </script>
+    }
+<div id="dialog" title="Basic dialog">
+    <p>This is the default dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.</p>
+</div>
+
+<div class="lightPadding"><h4>Search</h4>
+<!-- Search bar with string and drop down menus. Drop Down Menus are populated by the ViewBag Object-->
+<fieldset>
+    <label for="Encryption">Encryption</label>
+    <select class="option" name="Encryption" id="Encryption">
+
+        @foreach (var item in ViewBag.EncryptionList)
+        {
+            <option> @Html.DisplayFor(modelItem => item)</option>
+        }
+
+        <option selected="selected">None</option>
+    </select>
+
+    <label for="Application">Application</label>
+
+    <select class="option" name="Application" id="Application">
+        
+        <option>None</option>
+        @foreach (var item in ViewBag.ApplicationList)
+        {
+            <option> @Html.DisplayFor(modelItem => item)</option>
+        }
+
+        <option selected="selected">None</option>
+    </select>
+        <label for="fileType">fileType</label>
+
+        <select class="option" name="fileType" id="fileType">
+
+            @foreach (var item in ViewBag.fileTypeList)
+            {
+                <option> @Html.DisplayFor(modelItem => item)</option>
+            }
+    <option selected="selected">None</option>
+    </select>
+
+    <label for="State">State</label>
+    <select class="option" name="State" id="State">
+
+        @foreach (var item in ViewBag.StateList)
+            {
+            <option> @Html.DisplayFor(modelItem => item)</option>
+        }
+
+        <option selected="selected">None</option>
+    </select>
+
+    <label for="basic"> DBname</label>
+    <input type="text" name="DBname" id="DBname">
+
+    <label for="basic"> Instance</label>
+    <input type="text" name="Instance" id="Instance">
+    <button style=" height: 2em" class="glyphicon glyphicon-search" id="search"></button>
+</fieldset>
+
+<hr /></div>
+    <!--<button id="pageDown" class="glyphicon glyphicon-chevron-left"></button>
+    <button id="pageUp" class="glyphicon glyphicon-chevron-right"></button>-->
+    <!-- Data Grid is listed below once it is fully rendered-->
+    <div id="DBreport">
+        <h1> Please Wait...</h1>
+    </div>

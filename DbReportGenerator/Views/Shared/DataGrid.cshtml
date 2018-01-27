@@ -1,0 +1,196 @@
+﻿@model IEnumerable<DbReportGenerator.Models.statusSQL>
+@{
+    ViewBag.Title = "DataGrid";
+}
+
+<div class="panel-default">
+    <div class="lightPadding panel-heading container-fluid " id="AlternateText">
+        <div class="row col-xs-12">
+            <div class="col-xs-9">
+                
+                    <button id="pageDown" class="glyphicon glyphicon-chevron-left flat" ></button>
+                <b>
+                    <span>&nbsp&nbsp&nbsp&nbsp&nbsp</span>
+                    <span id="page">@ViewData["page"] </span>
+                    <span>&nbsp<b>/</b>&nbsp</span>
+                    <span id="maxPage">@ViewBag.maxPage</span>
+                    <span>&nbsp&nbsp&nbsp&nbsp&nbsp</span>
+                </b>
+                    <button id="pageUp" class="glyphicon glyphicon-chevron-right flat clearButton" ></button>
+                
+                
+            </div>
+            <div class="col-xs-2 text-center" >
+                
+                
+                    <b>
+                        <span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
+                        <span>@ViewBag.searchTotal</span>
+                        <span>&nbsp&nbsp&nbsp&nbsp Records Found</span>
+                    </b>
+
+               
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Instance)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DBname)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LogicalFileName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FileType)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EncryptionStatus)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Application)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.State)
+                </th>
+                <th></th>
+            </tr>
+
+            @{int counter = 0;}
+            @foreach (var item in Model)
+            {
+                counter++;
+                if (item.EncryptionStatus.Contains("Unencrypted/Non-Compliant")) { item.EncryptionStatus = "Unencrypted/Non-Compliant"; }
+
+                <tr style="background-color:@(counter%2!=0 ? "rgba(255, 192, 59, 0.36)":"")">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Instance)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DBname)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LogicalFileName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FileType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EncryptionStatus)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Application)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.State)
+                    </td>
+                    <td class="Detail">
+                        <button id="@item.id" class="flat panel panel-default HoldData">Review<span class="hidden"></span></button>
+                    </td>
+                </tr>
+
+            }
+
+        </table>
+    </div>
+    </div>
+    @*
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.NodeName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Instance)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DBname)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LogicalFileName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PathFromSQL)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FileType)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NodeNameVormetric)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.GuardPointPath)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EncryptionStatus)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Application)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.State)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Environment)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LastUpdate)
+                </th>
+                <th></th>
+            </tr>
+
+        @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NodeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Instance)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DBname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LogicalFileName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PathFromSQL)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FileType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NodeNameVormetric)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GuardPointPath)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EncryptionStatus)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Application)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.State)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Environment)
+                </td>
+                  <td>
+                    @{ string datetime = item.LastUpdate.Value.ToShortDateString(); }
+                    @Html.DisplayFor(modelItem => datetime)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+                    @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+                </td>
+            </tr>
+        }
+
+        </table>*@

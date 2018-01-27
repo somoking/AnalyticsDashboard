@@ -1,0 +1,69 @@
+﻿@*@model IEnumerable<DbReportGenerator.Models.DBdata>;*@
+@using PagedList
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Index";
+    @Scripts.Render("~/bundles/chartist")
+    @Styles.Render("~/Content/chartist")
+
+
+}
+
+<h2>SQL Database Status</h2>
+@section scripts{
+<script>
+
+    var Query = { Encrypted: "None", Accounted: "None", Production: "None", Search: null, page: "1"};
+
+    $("#search").change(function ()
+    {
+        Query = { Encrypted: "None", Accounted: "None", Production: "None", Search: null, page: 1 }
+        Query.page = 1;
+        Query.Encrypted = Encrypted.value;
+        Query.Accounted = Accounted.value;
+        Query.Production = Production.value;
+        Query.Search = $('#searchString').val()
+        //$.post("/DBdata/Submit", Query, function (data) { $("#DBreport").html(data) })
+        //return Query;
+        $.ajax("/DBdata/Submit", {
+            type: 'POST',
+            traditional: true,
+            data: {Query}
+        });
+
+    });
+    
+
+    $("#up").click(function () { Query.page++; console.log(Query); $.post("/DBdata/Submit", Query, function (data) { $("#DBreport").html(data) }) })
+        $("#down").click(function () { Query.page--;console.log(Query) ;$.post("/DBdata/Submit", Query,function (data) { $("#DBreport").html(data)})})
+    </script>
+}
+<button id="up" class="glyphicon glyphicon-chevron-up"></button>
+<button id="down" class="glyphicon glyphicon-chevron-down"></button>
+<fieldset id="search">
+    <label for="Encrypted">Encrypted</label>
+    <select class="option" name="Encrypted" id="Encrypted">
+        <option>True</option>
+        <option>False</option>
+        <option selected="selected">None</option>
+    </select>
+    <label for="Accounted">Accounted</label>
+    <select class="option" name="Accounted" id="Accounted">
+        <option>True</option>
+        <option>False</option>
+        <option selected="selected">None</option>
+    </select>
+    <label for="Production">Production</label>
+    <select class="option" name="Production" id="Production">
+        <option>True</option>
+        <option>False</option>
+        <option selected="selected">None</option>
+    </select>
+    <label for="basic"> Name</label>
+    <input type="text" name="searchString" id="searchString">
+</fieldset>
+
+<div id="DBreport">
+    @Html.Partial("PartialReportView")
+</div>
+

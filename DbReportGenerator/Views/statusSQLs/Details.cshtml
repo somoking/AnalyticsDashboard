@@ -1,0 +1,122 @@
+﻿@model DbReportGenerator.Models.statusSQL
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>statusSQL</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.NodeName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NodeName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Instance)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Instance)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DBname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DBname)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LogicalFileName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LogicalFileName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PathFromSQL)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PathFromSQL)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FileType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FileType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NodeNameVormetric)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NodeNameVormetric)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GuardPointPath)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GuardPointPath)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EncryptionStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EncryptionStatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Application)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Application)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.State)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.State)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Environment)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Environment)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LastUpdate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastUpdate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

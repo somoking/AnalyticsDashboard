@@ -1,0 +1,56 @@
+[
+  {
+    "outputFileName": "Content/bootstrap.min.css",
+    "inputFiles": [
+      "Content/bootstrap.css"
+    ]
+  },
+  {
+    "outputFileName": "Content/jquery-ui.min.css",
+    "inputFiles": [
+      "Content/jquery-ui.css"
+    ]
+  },
+  {
+    "outputFileName": "Content/jquery-ui.theme.min.css",
+    "inputFiles": [
+      "Content/jquery-ui.theme.css"
+    ]
+  },
+  {
+    "outputFileName": "Content/jquery-ui.structure.min.css",
+    "inputFiles": [
+      "Content/jquery-ui.structure.css"
+    ]
+  },
+  {
+    "outputFileName": "Content/Site.min.css",
+    "inputFiles": [
+      "Content/Site.css"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/Chart.min.js",
+    "inputFiles": [
+      "Scripts/Chart.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/respond.min.js",
+    "inputFiles": [
+      "Scripts/respond.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/bootstrap.min.js",
+    "inputFiles": [
+      "Scripts/bootstrap.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/jquery-1.10.2.min.js",
+    "inputFiles": [
+      "Scripts/jquery-1.10.2.js"
+    ]
+  }
+]

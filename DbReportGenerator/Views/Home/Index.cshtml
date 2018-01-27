@@ -1,0 +1,667 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+    @Scripts.Render("~/bundles/chart");
+    ViewBag.bodyCSSClass = "databasecontainer";
+    var keys = ViewData.Keys;
+    foreach (string key in keys)
+    {
+        System.Diagnostics.Debug.WriteLine(key);
+    }
+}
+@section scripts{
+    <script>
+        var pieData =
+             {
+                 "type": "doughnut",
+                 "data":
+                     {
+                         "labels": ["Encrypted", "Unencrypted", "ABRI to be verified", "To be decommissioned", "Not in Scope MMS Corprate", "Not in Scope Delphix", "Not in scope - System Database", ],
+                         "datasets":
+                             [
+                         {
+                             "label": "My First Dataset",
+                             "data":
+                                 [
+                                     @ViewData["Encrypted"]
+                                     ,@ViewData["Unencrypted/Non-Compliant. Hostname and Guardpoint not defined in the DSM"]
+                                     ,@ViewData["TBD - Actual node name for ABRI to be verified"]
+                                     ,@ViewData["Not in scope - To be decommissioned"]
+                                     ,@ViewData["Not in scope - MMS Corporate"]
+                                     ,@ViewData["Not in scope - Delphix"]
+                                     ,@ViewData["Not in scope - System Database"]
+                                 ],
+
+                             "backgroundColor":
+                                 [
+                             "#22B73C",
+                             "#EA2B39",
+                             "#FFC641",
+                             "#29929C",
+                             "#B60C87",
+                             "#3A59AC",
+                             "#8830AA",
+                                 ]
+                         }
+                             ]
+                     },
+                 "options":
+                     {
+                         "layout":
+                             {
+                                 "padding":
+                                     {
+                                         "left": 20,
+                                         "right": 20,
+                                         "top": 20,
+                                         "bottom": 20
+                                     }
+                             },
+                         "title": {
+                             "display": true,
+                             "text": "Total @ViewData["Total"]",
+                             "position": "bottom",
+                             "fontSize": 14
+                         }
+                     }
+             }
+
+        var encryptedChart = new Chart(document.getElementById("encryptedChart"), pieData)
+
+        //--------------------------
+        var Linedata = {
+            type: 'line',
+            data: {
+                labels: ["January", "February", "March", "April", "May", "June", "July"],
+                datasets: [{
+                    label: "My First dataset",
+                    backgroundColor: "#FF3434",
+                    borderColor: "#FF3434",
+                    data: [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7
+                    ],
+                    fill: false,
+                }, {
+                    label: "My Second dataset",
+                    fill: false,
+                    backgroundColor: "#FF3434",
+                    borderColor: "#FF3434",
+                    data: [
+                        4,
+                        5,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                    ],
+                }]
+            },
+            options: {
+                responsive: true,
+                title: {
+                    display: true,
+                    text: 'Historical Data'
+                },
+                tooltips: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                hover: {
+                    mode: 'nearest',
+                    intersect: true
+                },
+                scales: {
+                    xAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Month'
+                        }
+                    }],
+                    yAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Value'
+                        }
+                    }]
+                }
+            }
+        };
+
+        var QuerySpecific =
+    {
+
+        "EncryptionStatus": "",
+        "FileType": "",
+        "State": ""
+    };
+        var QueryContains =
+                   {
+                       "Instance": "",
+                       "DBname": "",
+                   }
+
+
+        querycontatiner = {};
+        querycontatiner.QuerySpecific = QuerySpecific;
+        querycontatiner.FilterNumber = "";
+        querycontatiner.Application = "None"; //Application.value;
+        querycontatiner.QueryContains = QueryContains;
+
+
+        $.post("home/LineSubmit", querycontatiner, function (Jsonset) {
+            console.log(Jsonset, "<===");
+            var Color =
+                [
+                "#3A59AC",
+                "#22B73C",
+                "#2DB272",
+                "#29929C",
+                "#B60C87",
+                "#8830AA",
+                "#FFC641",
+                "#EA2B39"
+                ];
+
+            for (i = 0; i < Jsonset.dataset.length; i++) {
+
+
+                //Color set
+                var borderColor = Color.shift();
+                var BackgroundColor = borderColor;
+                Jsonset.dataset[i].backgroundColor = BackgroundColor;
+                Jsonset.dataset[i].borderColor = borderColor
+            }
+
+            var target = document.getElementById("QueryGraph");
+            Linedata.data.datasets = Jsonset.dataset;
+            Linedata.data.labels = Jsonset.labelset;
+            var encryptedChart = new Chart(document.getElementById("lineTest"), Linedata)
+        })
+
+
+        //--------------------------------------
+
+        var barData = {
+            "type": "horizontalBar",
+            "data":
+            {
+                "labels": "temp",
+
+                "datasets": [1]
+            },
+            "options":
+                {
+                    "scales":
+                        {
+                            "xAxes": [{
+                                "stacked": true
+                            }],
+                            "yAxes": [{
+                                "stacked": true
+                            }]
+                        },
+                    "layout":
+                        {
+                            "padding":
+                                {
+                                    "left": 10,
+                                    "right": 10,
+                                    "top": 10,
+                                    "bottom": 10
+                                }
+                        }
+                }
+        };
+
+
+        var Query = QueryConstructor("Unencrypted/Non-Compliant. Hostname and Guardpoint not defined in the DSM", "All", "None", "", "", "All", 50)
+        console.log(Query); console.log(querycontatiner);
+        $.post("home/BarSubmit", Query, function (Jsonset) {
+            masterChart = PopulateBarChart(Jsonset, barData);
+        });
+
+
+        $("#graph").click(function () {
+            Query = QueryConstructor($("#Encryption").val(), $("#FileType").val(), $("#State").val(), $('#Instance').val(), $('#DBname').val(), $("#Application").val(), $('#FilterNumber').val() || "0")
+            $.post("home/BarSubmit", Query, function (Jsonset) {
+                console.log(Jsonset, "XXXXXXXXXXX")
+                masterChart.destroy();
+                masterChart = PopulateBarChart(Jsonset, barData);
+                masterChart.render();
+            })
+        }
+        )
+
+
+        var SearchQuery = QueryConstructor("All", "All", "All", "", "", "All", "1")
+        $.post("home/Records", Query, function (data) { $("#DBreport").html(data); });
+
+        $("#Search").click(function () {
+            SearchQuery = QueryConstructor($("#EncryptionSearch").val(), $("#FileTypeSearch").val(), $("#StateSearch").val(), $('#InstanceSearch').val(), $('#DBnameSearch').val(), $("#ApplicationSearch").val(), 1)
+            console.log(Query);
+            $.post("home/Records", Query, function (data) { $("#DBreport").html(data); });
+        })
+
+
+        $(document).on("click", "#pageUp", function () {
+            var page = parseInt(document.getElementById("page").innerHTML)
+            var max = parseInt(document.getElementById("maxPage").innerHTML)
+
+            if (page < max) {
+                page++
+                SearchQuery.FilterNumber = page.toString();
+                $.post("home/Records", Query, function (data) { $("#DBreport").html(data); });
+            }
+        });
+
+        $(document).on("click", "#pageDown", function () {
+            var page = parseInt(document.getElementById("page").innerHTML)
+            if (page > 1) {
+                page--
+                SearchQuery.FilterNumber = page.toString();
+                $.post("home/Records", Query, function (data) { $("#DBreport").html(data); });
+            }
+        });
+
+        $(document).on("click", ".HoldData", function () {
+            var idString = this.id.toString();
+            var findID = { id: idString }
+            $.post("home/Details", findID, function (data) {
+                console.log(data); $("#Details").html(data); $("#dialog").dialog({
+                    width: 1200,
+                    height: 175
+                });
+            })
+        });
+
+        $(document).on("click", "#infoGraph", function () {
+            $("#info").dialog({
+                width: 450,
+                height: 250
+
+            });
+            $("#info").css('display', 'block');
+        });
+
+
+
+
+
+
+        function PopulateBarChart(Jsonset, barData) {
+            var Stack0Color = ["#FF3434", "#5539BF", "#FFB534", "#FFF934", "#FFD734", "#FF9F34", "#52DE2D", "#000000"];
+            var Stack1Color = ["#F9737D", "#FFFC69", "#5E84CA", "#000000"];
+            var Stack2Color = ["#FF3434"];
+            for (i = 0; i < Jsonset.dataset.length; i++) {
+                //Label Set
+                var Title = Jsonset.dataset[i].label;
+                if (Title.substring(0,"Unencrypted".length) == "Unencrypted") { Title = "Unencrypted"; }
+                if (Title.substring(0, "TBD".length)=="TBD") { Title = "To Be Verified ABRI"; }
+                if (Title.substring(0, "Not in scope".length)=="Not in scope") { Title = Title.substring(14); }
+                Jsonset.dataset[i].label = Title;
+                //Color set
+
+                if (Jsonset.dataset[i].stack == "stack0") { console.log(1); Jsonset.dataset[i].backgroundColor = Stack0Color.shift() }
+                if (Jsonset.dataset[i].stack == "stack1") { Jsonset.dataset[i].backgroundColor = Stack1Color.shift() }
+                if (Jsonset.dataset[i].stack == "stack2") { Jsonset.dataset[i].backgroundColor = Stack2Color.shift(); }
+                Jsonset.dataset[i].label = Title;
+
+            }
+
+            var string = '<canvas height=' + (((Jsonset.labelset.length * 5) + 75) + 'px') + ' id="QueryGraph"></canvas>'
+            $("#QueryCanvas").html(string)
+            var target = document.getElementById("QueryGraph");
+            barData.data.datasets = Jsonset.dataset;
+            barData.data.labels = Jsonset.labelset;
+
+            return new Chart(target, barData);
+
+        }
+        function QueryConstructor(EncryptionStatus, FileType, State, Instance, DBname, Application, FilterNumber) {
+            Query = {
+                QuerySpecific:
+                    {
+                        EncryptionStatus: EncryptionStatus,
+                        FileType: FileType,
+                        State: State,
+                    },
+                QueryContains:
+                {
+                    Instance: Instance,
+                    DBname: DBname
+                },
+                Application: Application,
+                FilterNumber: FilterNumber
+            }
+            return Query;
+        }
+
+    </script>
+    }
+    <div id="Details"></div>
+
+   <div id="info" title="Query Tool FAQ" style="display:none">
+    <p>
+        <label >Encryption / Application / FileType / State</label>
+        </br>
+        
+           If <b>"All"</b> is selected all values will be shown and broken down in the chart
+        </br>
+                If <b>"None"</b> is selected this value type will not be displayed for more clarity
+        </br>
+                Otherwise whatever is selected will be to find only records with that value
+        </br>
+                Encryption is a special case, You will always see bar showing the total records.
+        </br>
+
+       <hr>
+
+        <label for="basic"> Instance / DBname</label>
+        </br>
+        This is a standard search box for filtering by text
+        </br>
+        <label for="basic">FilterNumber</label>
+        </br>
+          Applications with fewer records then this number will not be included
+        </br>
+
+        
+</div>
+<div class="col-md-12 container-fluid">
+    <h1 class="text-center">Database Insights</h1>
+</div>
+<div class="example">
+    <div class="panel-group" id="accordion">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Overview</a>
+                </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in">
+                <div class="panel-body">
+
+
+                    <div class="col-md-4">
+                        <canvas id="encryptedChart"></canvas>
+                    </div>
+
+                    <div class="col-md-8">
+                        <canvas id="lineTest"></canvas>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<div id="accordionLeaf" class="AccordianPanel panel-default">
+    <div class="panel-heading">
+        <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Query Engine</a>
+        </h4>
+    </div>
+    <div id="collapseTwo" class="panel-collapse collapse">
+        <div class="panel-body" id="QueryPanel">
+
+
+            <div class="col-md-3 container ">
+                <br>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title container "><span class="col-xs-10">New Graph Options</span><span id="infoGraph" class="glyphicon glyphicon-info-sign col-xs-1"></span></h4>
+                    </div>
+                    <div>
+                        <fieldset>
+                            <div id="QueryPanel">
+
+                                <label for="Encryption">Encryption</label>
+                                </br>
+                                <select class="option" name="Encryption" id="Encryption">
+                                    <option selected="selected">All</option>
+                                    <option>None</option>
+                                    @foreach (var item in (IEnumerable<string>)ViewData["EncryptionStatus"])
+                                    {
+                                        <option> @Html.DisplayFor(modelItem => item)</option>
+                                    }
+
+                                </select>
+                                </br>
+
+                                <label for="Application">Application</label>
+                                </br>
+                                <select class="option" name="Application" id="Application">
+                                    <option selected="selected">All</option>
+                                    <option>None</option>
+
+                                    @foreach (var item in (IEnumerable<string>)ViewData["Application"])
+                                    {
+                                        <option> @Html.DisplayFor(modelItem => item)</option>
+                                    }
+
+                                </select>
+                                </br>
+
+                                <label for="FileType">FileType</label>
+                                </br>
+                                <select class="option" name="FileType" id="FileType">
+                                    <option selected="selected">All</option>
+                                    <option>None</option>
+                                    @foreach (var item in (IEnumerable<string>)ViewData["FileType"])
+                                    {
+                                        <option> @Html.DisplayFor(modelItem => item)</option>
+                                    }
+
+                                </select>
+                                </br>
+
+                                <label for="State">State</label>
+                                </br>
+                                <select class="option" name="State" id="State">
+                                    <option>All</option>
+                                    <option selected="selected">None</option>
+                                    @foreach (var item in (IEnumerable<string>)ViewData["State"])
+                                    {
+                                        <option> @Html.DisplayFor(modelItem => item)</option>
+                                    }
+
+                                </select>
+                                </br>
+                                <label for="basic">FilterNumber</label>
+                                </br>
+                                <input type="text" name="FilterNumber" id="FilterNumber">
+                                </br>
+
+                                <label for="basic"> DBname</label>
+                                </br>
+                                <input type="text" name="DBname" id="DBname">
+                                </br>
+
+                                <label for="basic"> Instance</label>
+                                </br>
+                                <input type="text" name="Instance" id="Instance">
+                            </div>
+
+                            <button class="panel-footer text-center col-md-12 flat" id="graph"><b>Search</b> <span class="glyphicon glyphicon-search"></button>
+                        </fieldset>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="container col-md-9">
+                <div id="QueryCanvas"><canvas height="200px" id="QueryGraph"></canvas></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div id="accordionLeaf" class="AccordianPanel panel-default">
+    <div class="panel-heading">
+        <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">DataGrid</a>
+        </h4>
+    </div>
+    <div id="collapseThree" class="panel-collapse collapse">
+        <div class="" id="DataGrid">
+            <div class="panel-heading panel-default">
+                <div>
+                    <fieldset>
+                        <div id="QueryPanel" class="col-xs-11">
+
+                            <label for="Encryption">Encryption</label>
+
+                            <select class="option" name="Encryption" id="EncryptionSearch">
+                                <option selected="selected">All</option>
+                                <option>None</option>
+                                @foreach (var item in (IEnumerable<string>)ViewData["EncryptionStatus"])
+                            {
+                            <option> @Html.DisplayFor(modelItem => item)</option>
+                            }
+
+                            </select>
+
+
+                            <label for="Application">Application</label>
+
+                            <select class="option" name="Application" id="ApplicationSearch">
+                                <option selected="selected">All</option>
+                                <option>None</option>
+
+                                @foreach (var item in (IEnumerable<string>)ViewData["Application"])
+                            {
+                            <option> @Html.DisplayFor(modelItem => item)</option>
+                            }
+
+                            </select>
+
+
+                            <label for="FileType">FileType</label>
+
+                            <select class="option" name="FileType" id="FileTypeSearch">
+                                <option selected="selected">All</option>
+                                <option>None</option>
+                                @foreach (var item in (IEnumerable<string>)ViewData["FileType"])
+                            {
+                            <option> @Html.DisplayFor(modelItem => item)</option>
+                            }
+
+                            </select>
+
+
+                            <label for="State">State</label>
+
+                            <select class="option" name="State" id="StateSearch">
+                                <option>All</option>
+                                <option selected="selected">None</option>
+                                @foreach (var item in (IEnumerable<string>)ViewData["State"])
+                            {
+                            <option> @Html.DisplayFor(modelItem => item)</option>
+                            }
+
+                            </select>
+
+
+                            <label for="basic"> DBname</label>
+
+                            <input type="text" name="DBname" id="DBnameSearch">
+
+
+                            <label for="basic"> Instance</label>
+
+                            <input type="text" name="Instance" id="InstanceSearch">
+                        </div>
+
+                        <button class="panel-footer text-center col-md-1 flat" id="Search"><b>Search</b> <span class="glyphicon glyphicon-search"></button>
+                    </fieldset>
+                </div>
+
+            </div>
+
+            <div id="DBreport">
+                <h1 class="col-md-offset-2"> Please Wait...</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<div class="databasecontainer body-content">
+    <div class="col-md-12 container"><h1 class="text-center">Database Insights</h1></div>
+    <section>
+        <div class="col-md-12 container">
+            <div class="col-md-12 container ">
+                <br />
+
+                <div class=" container">
+                    <h3>Encrypted staus</h3>
+                    <canvas id="encryptedChart"></canvas>
+                </div>
+            </div>
+
+            <div class="container col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">Display</h4>
+
+
+
+
+                        <fieldset style="margin:5px;">
+                            <label for="Total">Total</label>
+                            <select class="option" name="Total" id="Total">
+
+                                <option>True</option>
+                                <option selected="selected">False</option>
+                            </select>
+
+                            <label for="Unencrypted">Unencrypted</label>
+                            <select class="option" name="Unencrypted" id="Unencrypted">
+
+                                <option selected="selected">True</option>
+                                <option>False</option>
+
+                            </select>
+
+                            <label for="Filetype">Filetype</label>
+                            <select class="option" name="Filetype" id="Filetype">
+
+                                <option>True</option>
+                                <option selected="selected">False</option>
+
+                            </select>
+
+                            <label for="Over">#Unencrypted </label>
+                            <select class="option" name="Over" id="Over">
+                                <option>0</option>
+                                <option>10</option>
+                                <option>20</option>
+                                <option>30</option>
+                                <option>40</option>
+                                <option selected="selected">50</option>
+                            </select>
+                            <br />
+                            <button id="graph" style="height:1.5em" class="glyphicon glyphicon-signal">&nbspGraph</button>
+                        </fieldset>
+                    </div>
+
+                    <h3 class="text-center">Unencrypted by Application</h3>
+                    <div id="canvas"><canvas height="200px" id="uncryptedBreakdown"></canvas></div>
+                </div>
+            </div>
+        </div>
+</div>
+
+<hr>-->
+    </section>
+<section></section>
+

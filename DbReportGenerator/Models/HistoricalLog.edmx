@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="AdventureParkModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'AdventurePark.db_owner.EncryptionStatusLog' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="EncryptionStatusLog">
+          <Key>
+            <PropertyRef Name="Application" />
+          </Key>
+          <Property Name="Application" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LDF" Type="int" />
+          <Property Name="MDF" Type="int" />
+          <Property Name="NDF" Type="int" />
+          <Property Name="Encrypted" Type="int" />
+          <Property Name="Unencrypted_Non_Compliant" Type="int" />
+          <Property Name="TBD_ABRI_to_be_verified" Type="int" />
+          <Property Name="Not_in_scope_System_Database" Type="int" />
+          <Property Name="Not_in_scope_MMS_Corporate" Type="int" />
+          <Property Name="Not_in_scope_Delphix" Type="int" />
+          <Property Name="Not_in_scope_To_be_decommissioned" Type="int" />
+        </EntityType>
+        <EntityContainer Name="AdventureParkModelStoreContainer">
+          <EntitySet Name="EncryptionStatusLog" EntityType="Self.EncryptionStatusLog" store:Type="Tables" store:Schema="db_owner">
+            <DefiningQuery>SELECT 
+    [EncryptionStatusLog].[Application] AS [Application], 
+    [EncryptionStatusLog].[LDF] AS [LDF], 
+    [EncryptionStatusLog].[MDF] AS [MDF], 
+    [EncryptionStatusLog].[NDF] AS [NDF], 
+    [EncryptionStatusLog].[Encrypted] AS [Encrypted], 
+    [EncryptionStatusLog].[Unencrypted_Non_Compliant] AS [Unencrypted_Non_Compliant], 
+    [EncryptionStatusLog].[TBD_ABRI_to_be_verified] AS [TBD_ABRI_to_be_verified], 
+    [EncryptionStatusLog].[Not_in_scope_System_Database] AS [Not_in_scope_System_Database], 
+    [EncryptionStatusLog].[Not_in_scope_MMS_Corporate] AS [Not_in_scope_MMS_Corporate], 
+    [EncryptionStatusLog].[Not_in_scope_Delphix] AS [Not_in_scope_Delphix], 
+    [EncryptionStatusLog].[Not_in_scope_To_be_decommissioned] AS [Not_in_scope_To_be_decommissioned]
+    FROM [db_owner].[EncryptionStatusLog] AS [EncryptionStatusLog]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AdventureParkModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="EncryptionStatusLog">
+          <Key>
+            <PropertyRef Name="Application" />
+          </Key>
+          <Property Name="Application" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LDF" Type="Int32" />
+          <Property Name="MDF" Type="Int32" />
+          <Property Name="NDF" Type="Int32" />
+          <Property Name="Encrypted" Type="Int32" />
+          <Property Name="Unencrypted_Non_Compliant" Type="Int32" />
+          <Property Name="TBD_ABRI_to_be_verified" Type="Int32" />
+          <Property Name="Not_in_scope_System_Database" Type="Int32" />
+          <Property Name="Not_in_scope_MMS_Corporate" Type="Int32" />
+          <Property Name="Not_in_scope_Delphix" Type="Int32" />
+          <Property Name="Not_in_scope_To_be_decommissioned" Type="Int32" />
+        </EntityType>
+        <EntityContainer Name="AdventureParkEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="EncryptionStatusLogs" EntityType="Self.EncryptionStatusLog" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AdventureParkModelStoreContainer" CdmEntityContainer="AdventureParkEntities">
+          <EntitySetMapping Name="EncryptionStatusLogs">
+            <EntityTypeMapping TypeName="AdventureParkModel.EncryptionStatusLog">
+              <MappingFragment StoreEntitySet="EncryptionStatusLog">
+                <ScalarProperty Name="Application" ColumnName="Application" />
+                <ScalarProperty Name="LDF" ColumnName="LDF" />
+                <ScalarProperty Name="MDF" ColumnName="MDF" />
+                <ScalarProperty Name="NDF" ColumnName="NDF" />
+                <ScalarProperty Name="Encrypted" ColumnName="Encrypted" />
+                <ScalarProperty Name="Unencrypted_Non_Compliant" ColumnName="Unencrypted_Non_Compliant" />
+                <ScalarProperty Name="TBD_ABRI_to_be_verified" ColumnName="TBD_ABRI_to_be_verified" />
+                <ScalarProperty Name="Not_in_scope_System_Database" ColumnName="Not_in_scope_System_Database" />
+                <ScalarProperty Name="Not_in_scope_MMS_Corporate" ColumnName="Not_in_scope_MMS_Corporate" />
+                <ScalarProperty Name="Not_in_scope_Delphix" ColumnName="Not_in_scope_Delphix" />
+                <ScalarProperty Name="Not_in_scope_To_be_decommissioned" ColumnName="Not_in_scope_To_be_decommissioned" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

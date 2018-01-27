@@ -1,0 +1,45 @@
+﻿@model IEnumerable<DbReportGenerator.Models.DBdata>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Accounted)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Encrypted)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Production)
+        </th>
+        <th>
+           <!----> @Html.DisplayNameFor(model=> model.Priority)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    var style = (item.Priority == "Major") ? "color:red" : "";
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Accounted)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Encrypted)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Production)
+        </td>
+        <td class="priority-@item.Priority">
+         <!---->  @Html.DisplayFor(modelItem => item.Priority)
+        </td>
+        <td>
+            @Html.ActionLink("Details", "Details", new { id=item.ID })
+        </td>
+    </tr>
+}
+
+</table>
